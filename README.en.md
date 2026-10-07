@@ -40,21 +40,21 @@ docker run -d --name cloudflare-ai-web \
 
 ### Environment Variables
 
-| Name                                | Description                      | Required     |
-| ----------------------------------- | -------------------------------- | ------------ |
-| CF_ACCOUNT_ID                       | Cloudflare Account ID            | ✅           |
-| CF_WORKERS_AI_TOKEN                 | Cloudflare Workers AI Token      | ✅           |
-| CF_AI_GATEWAY_NAME                  | Cloudflare AI Gateway Name       |              |
-| CF_AI_GATEWAY_TOKEN                 | Cloudflare AI Gateway Auth Token | With gateway |
-| GOOGLE_API_KEY                      | Google AI Studio Token           | With Google  |
-| NEXT_PUBLIC_CF_AI_GATEWAY_PROVIDERS | Cloudflare AI Gateway Providers  |              |
-| APP_PASSWORD                        | Access Password (Access Session) |              |
+| Name                    | Description                      | Required     |
+| ----------------------- | -------------------------------- | ------------ |
+| CF_ACCOUNT_ID           | Cloudflare Account ID            | ✅           |
+| CF_WORKERS_AI_TOKEN     | Cloudflare Workers AI Token      | ✅           |
+| CF_AI_GATEWAY_NAME      | Cloudflare AI Gateway Name       |              |
+| CF_AI_GATEWAY_TOKEN     | Cloudflare AI Gateway Auth Token | With gateway |
+| GOOGLE_API_KEY          | Google AI Studio Token           | With Google  |
+| CF_AI_GATEWAY_PROVIDERS | Cloudflare AI Gateway Providers  |              |
+| APP_PASSWORD            | Access Password (Access Session) |              |
 
 #### CF_WORKERS_AI_TOKEN
 
 - Manage Account - Account API Tokens - Create Token - Create with Workers AI template
 
-#### NEXT_PUBLIC_CF_AI_GATEWAY_PROVIDERS
+#### CF_AI_GATEWAY_PROVIDERS
 
 Supported providers:
 

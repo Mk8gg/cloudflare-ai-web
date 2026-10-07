@@ -40,21 +40,21 @@ docker run -d --name cloudflare-ai-web \
 
 ### 环境变量列表
 
-| 名称                                | 描述                       | 必填         |
-| ----------------------------------- | -------------------------- | ------------ |
-| CF_ACCOUNT_ID                       | Cloudflare 账户ID          | ✅           |
-| CF_WORKERS_AI_TOKEN                 | Cloudflare Workers AI令牌  | ✅           |
-| CF_AI_GATEWAY_NAME                  | Cloudflare AI网关名称      |              |
-| CF_AI_GATEWAY_TOKEN                 | Cloudflare AI网关授权令牌  | 使用网关时   |
-| GOOGLE_API_KEY                      | Google AI Studio 令牌      | 使用Google时 |
-| NEXT_PUBLIC_CF_AI_GATEWAY_PROVIDERS | Cloudflare AI网关提供者    |              |
-| APP_PASSWORD                        | 访问密码（Access Session） |              |
+| 名称                    | 描述                       | 必填         |
+| ----------------------- | -------------------------- | ------------ |
+| CF_ACCOUNT_ID           | Cloudflare 账户ID          | ✅           |
+| CF_WORKERS_AI_TOKEN     | Cloudflare Workers AI令牌  | ✅           |
+| CF_AI_GATEWAY_NAME      | Cloudflare AI网关名称      |              |
+| CF_AI_GATEWAY_TOKEN     | Cloudflare AI网关授权令牌  | 使用网关时   |
+| GOOGLE_API_KEY          | Google AI Studio 令牌      | 使用Google时 |
+| CF_AI_GATEWAY_PROVIDERS | Cloudflare AI网关提供者    |              |
+| APP_PASSWORD            | 访问密码（Access Session） |              |
 
 #### CF_WORKERS_AI_TOKEN
 
 - 管理账户 - 账户API令牌 - 创建令牌 - 使用Workers AI模板创建
 
-#### NEXT_PUBLIC_CF_AI_GATEWAY_PROVIDERS
+#### CF_AI_GATEWAY_PROVIDERS
 
 支持的提供者：
 

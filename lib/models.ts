@@ -63,7 +63,12 @@ export const getModelGroup = (model: Model) =>
   model.source === "external" ? "External" : model.brand;
 
 export const getExternalModels = () => {
-  const providers = process.env.NEXT_PUBLIC_CF_AI_GATEWAY_PROVIDERS?.split(",")
+  // NEXT_PUBLIC_ variables are inlined at build time, so prebuilt images ignore them at runtime.
+  // The legacy name remains a fallback for deployments that build with it set.
+  const providers = (
+    process.env.CF_AI_GATEWAY_PROVIDERS ?? process.env.NEXT_PUBLIC_CF_AI_GATEWAY_PROVIDERS
+  )
+    ?.split(",")
     .map((provider) => provider.trim())
     .filter(Boolean);
 

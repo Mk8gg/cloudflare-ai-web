@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- Gateway providers are now read from `CF_AI_GATEWAY_PROVIDERS` at runtime, so External Models such as Gemini can be enabled on the prebuilt Docker image. `NEXT_PUBLIC_CF_AI_GATEWAY_PROVIDERS` was inlined at build time and ignored by `docker run -e`; it remains a build-time fallback.
+
 ## 5.1.0
 
 ### Changed
