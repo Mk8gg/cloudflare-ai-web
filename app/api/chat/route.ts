@@ -1,6 +1,8 @@
 import {
   convertToModelMessages,
+  createUIMessageStream,
   createUIMessageStreamResponse,
+  generateText,
   isStepCount,
   safeValidateUIMessages,
   streamText,
@@ -62,14 +64,41 @@ export async function POST(request: Request) {
     throw error;
   }
 
-  const result = streamText({
+  const streamTextParams = {
     model: chatModel.model,
     messages: await convertToModelMessages(modelContext),
     instructions:
       "You are a helpful assistant. Follow the user's instructions carefully. Respond using Markdown.",
     tools: chatModel.tools,
     stopWhen: isStepCount(5),
-  });
+  };
+
+  // 非流式模式：一次返回完整回复，避免长连接被防火墙中断
+  // 环境变量 DISABLE_STREAMING=true 开启
+  if (process.env.DISABLE_STREAMING === "true") {
+    const result = await generateText(streamTextParams);
+    const stream = createUIMessageStream({
+      execute: ({ writer }) => {
+        const messageId = `msg-${Date.now()}`;
+        writer.write({ type: "start", messageId });
+        writer.write({
+          type: "text-start",
+          id: `text-${Date.now()}`,
+        });
+        writer.write({
+          type: "text-delta",
+          id: `text-${Date.now()}`,
+          delta: result.text,
+        });
+        writer.write({ type: "text-end", id: `text-${Date.now()}` });
+        writer.write({ type: "finish" });
+      },
+      originalMessages: modelContext,
+    });
+    return createUIMessageStreamResponse({ stream });
+  }
+
+  const result = streamText(streamTextParams);
   const stream = toUIMessageStream({ stream: result.stream, originalMessages: modelContext });
 
   return createUIMessageStreamResponse({ stream });
