@@ -30,14 +30,27 @@ export const createUserMessage = (text: string, files: FileUIPart[] = []): UIMes
   parts: [...files, { type: "text", text }],
 });
 
+/** Fallback ID generator when crypto.randomUUID is unavailable (non-secure context). */
+const generateSessionId = (): string => {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `sess-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+};
+
 /** Starts a Conversation History with its first user message and returns the session id. */
 export const createConversation = async (firstMessage: UIMessage): Promise<string> => {
-  const sessionId = crypto.randomUUID();
+  const sessionId = generateSessionId();
   const now = new Date();
-  await db.transaction("rw", db.session, db.message, async () => {
-    await db.session.add({ id: sessionId, name: getSessionName(firstMessage), updatedAt: now });
-    await db.message.add({ ...firstMessage, sessionId, createdAt: now });
-  });
+  try {
+    await db.transaction("rw", db.session, db.message, async () => {
+      await db.session.add({ id: sessionId, name: getSessionName(firstMessage), updatedAt: now });
+      await db.message.add({ ...firstMessage, sessionId, createdAt: now });
+    });
+  } catch (error) {
+    // IndexedDB 不可用（如存储被禁用/配额满）时不阻断对话，仅失去历史记录持久化
+    console.warn("createConversation: IndexedDB write failed, continuing without persistence", error);
+  }
   return sessionId;
 };
 
